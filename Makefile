@@ -17,7 +17,7 @@ usr.bin.o: $(OBJ)/usr/sys_cmd/sys_cmd.o $(LOBJ)/usr/cec_a1_ctrl.o
 	$(OBJCOPY) --prefix-symbols=__usr_ $(LOBJ)/usr/usr.bin.o
 
 my_drivers: $(LOBJ)/usr $(LOBJ)/usr/cec_a1_drivers.o
-	$(LD) -r -o $(LOBJ)/usr/usr.drivers.o cec_a1_drivers.o
+	$(LD) -r -o $(LOBJ)/usr/usr.drivers.o $(LOBJ)/usr/cec_a1_drivers.o
 	mkdir -p $(LOBJ)/drv_obj
 	cp $(LOBJ)/usr/usr.drivers.o  $(LOBJ)/drv_obj/$@.o
 
@@ -31,22 +31,22 @@ $(LOBJ)/usr/cec_a1_drivers.o: cec_drv.o a1_drv.o
 	$(CC) -r -nostdlib -o $@ $^
 
 %_drv.o: %_drv.c
-	$(CC) $(CFLAGS_DRV) -c -o $@ $<
+	$(CC) $(CFLAGS) -c -o $@ $<
 
 main.o: main.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS_USR) -c -o $@ $<
 
 asynchio.o: asynchio.c asynchio.h
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS_USR) -c -o $@ $<
 
 pulse_eight.o: pulse_eight.c asynchio.h
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS_USR) -c -o $@ $<
 
 cec.o: cec.c cec.h
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS_USR) -c -o $@ $<
 
 a1.o: a1.c a1.h
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS_USR) -c -o $@ $<
 
 clean:
-	rm -rf *.o  cec_a1_ctrl
+	rm -rf *.o  cec_a1_ctrl myCore obj

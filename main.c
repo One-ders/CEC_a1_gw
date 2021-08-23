@@ -32,6 +32,7 @@
  */
 
 #include <config.h>
+#include <stdarg.h>
 #include "sys.h"
 #include "sys_env.h"
 #include "io.h"
@@ -216,7 +217,7 @@ int log(const char *fmt, ...) {
 	int nend;
 
 	va_start(arg,fmt);
-	size=vsprintf(sbuf,fmt,arg);
+	size=vsnprintf(sbuf,sizeof(sbuf),fmt,arg);
 	va_end(arg);
 
 	sbuf[size]=0;
