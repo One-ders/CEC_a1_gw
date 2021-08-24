@@ -34,12 +34,14 @@
 #include <config.h>
 #include "sys.h"
 #include "io.h"
+#include <string.h>
 #include "cec_drv.h"
 #include "cec.h"
 #include "a1.h"
 
 #include "asynchio.h"
 
+int log(const char *fmt, ...);
 
 static int fd_cec;
 static unsigned char cec_rbuf[24];
@@ -235,7 +237,7 @@ static int handle_cec_data(int fd,int ev, void *dum) {
 
 
 	if (rc==3) {
-		int rrc;
+//		int rrc;
 		if (memcmp(cec_rbuf,onkyo_started,sizeof(onkyo_started))==0) {
 			log("%t got onkyo start code\n");
 			// ask tv about state
@@ -281,11 +283,10 @@ static int handle_cec_data(int fd,int ev, void *dum) {
 	}
 
 	if (throw_data) {
-		int rrc;
 		log("%t ask tv for state\n");
 		ack_mask|=(1<<4);
 		io_control(fd_cec,CEC_SET_ACK_MSK,&ack_mask,sizeof(ack_mask));
-		rrc=cec_bus_send(tv_state,sizeof(tv_state));
+		cec_bus_send(tv_state,sizeof(tv_state));
 		memcpy(sbuf,cec_rbuf,24);
 		s_rc=rc;
 		return 0;

@@ -319,7 +319,7 @@ void watchdog(void *dum) {
 
 
 //int main(void) {
-int init_cec_a1(void) {
+int init_pkg(void) {
 	/* create some jobs */
 	thread_create(watchdog,0,0,3,"watchdog");
 	thread_create(cec_gw,0,0,1,"cec_gw");

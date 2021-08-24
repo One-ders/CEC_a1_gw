@@ -38,6 +38,7 @@
 #include "cec.h"
 #include "usb_serial_drv.h"
 
+int log(const char *fmt, ...);
 
 static int fd;
 static unsigned char rbuf[24];
