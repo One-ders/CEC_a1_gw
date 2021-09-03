@@ -297,8 +297,14 @@ static int handle_cec_data(int fd,int ev, void *dum) {
 		if ((cec_rbuf[1]==CEC_OPCODE_ROUTING_CHANGE)&&(rc>=6)) {
 //			unsigned int old_pa=(cec_rbuf[2]<<8)|cec_rbuf[3];
 			unsigned int new_pa=(cec_rbuf[4]<<8)|cec_rbuf[5];
-			if (new_pa==0x1000) {
+			if (new_pa==0x3000) { // hard coded to hdmi 3 on tv
 				log("%t wakeup system from Route change\n");
+				wakeup_usb_dev();
+			}
+		} else if (cec_rbuf[1]==CEC_OPCODE_SET_STREAM_PATH) {
+			unsigned int pa=(cec_rbuf[2]<<8)|cec_rbuf[3];
+			if (pa==0x3000) {  // hard coded to hdmi 3 on tv
+				log("%t wakeup system from set stream path\n");
 				wakeup_usb_dev();
 			}
 		} else if (cec_rbuf[1]==CEC_OPCODE_SET_MENU_LANGUAGE) {
