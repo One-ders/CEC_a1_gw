@@ -13,6 +13,15 @@ LOBJ:=obj
 
 include $(KREL)/Makefile
 
+DRIVERS=stddrv.o
+DRIVERS+=led_drv.o
+DRIVERS+=gpio_drv.o
+DRIVERS+=usart_drv.o
+#DRIVERS+=usb_core_drv.o
+#DRIVERS+=usb_serial_drv.o
+#DRIVERS+=hr_timer.o
+
+
 usr.bin.o: $(OBJ)/usr/sys_cmd/sys_cmd.o $(LOBJ)/usr/cec_a1_ctrl.o
 	$(LD) -o $(LOBJ)/usr/usr.bin.o $(LDFLAGS_USR) $^
 	$(OBJCOPY) --prefix-symbols=__usr_ $(LOBJ)/usr/usr.bin.o

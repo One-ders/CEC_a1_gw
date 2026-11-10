@@ -297,8 +297,8 @@ static int handle_get_osd_name(int fd,unsigned char *buf, int len) {
 }
 
 static int handle_get_pa(int fd,unsigned char *buf, int len) {
-	unsigned char sbuf[] = { 0xff, CMD_GET_PA, 0x20, 0x00, 0xfe };
-	DPRINTF("reply: get_pa 0x2000\n");
+	unsigned char sbuf[] = { 0xff, CMD_GET_PA, 0x23, 0x00, 0xfe };
+	DPRINTF("reply: get_pa 0x2300\n");
 	int rc=io_write(fd,(char *)sbuf,sizeof(sbuf));
 	if (rc!=sizeof(sbuf)) {
 		DPRINTF("tx_failed: got rc %d instead of %d\n", rc,sizeof(sbuf));

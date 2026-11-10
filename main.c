@@ -81,7 +81,7 @@ static struct cmd_node cmn = {
 };
 
 static int debug_fnc(int argc, char **argv, struct Env *env) {
-	fprintf(env->io_fd,"debug called with %d args\n",argc);
+	dprintf(env->io_fd,"debug called with %d args\n",argc);
 	if (argc!=2) {
 		goto out_err;
 	}
@@ -96,7 +96,7 @@ static int debug_fnc(int argc, char **argv, struct Env *env) {
 	return 0;
 
 out_err:
-	fprintf(env->io_fd,"debug needs argument (on or off)\n");
+	dprintf(env->io_fd,"debug needs argument (on or off)\n");
 	return -1;
 
 }
@@ -108,7 +108,7 @@ static int set_fnc(int argc, char **argv, struct Env *env) {
 	int myfd=io_open(CEC_DRV);
 	if (myfd<0) return -1;
 	if (argc!=3) {
-		fprintf(env->io_fd,"wrong arg count\n");
+		dprintf(env->io_fd,"wrong arg count\n");
 		io_close(myfd);
 		return -1;
 	}
@@ -121,7 +121,7 @@ static int set_fnc(int argc, char **argv, struct Env *env) {
 		unsigned int val_i=strtoul(val,0,0);
 		rc=io_control(myfd,CEC_SET_PROMISC,&val_i,sizeof(val_i));
 	} else {
-		fprintf(env->io_fd,"unknown var %s\n",var);
+		dprintf(env->io_fd,"unknown var %s\n",var);
 	}
 	io_close(myfd);
 	return rc;
@@ -133,7 +133,7 @@ static int get_fnc(int argc, char **argv, struct Env *env) {
 	int myfd=io_open(CEC_DRV);
 	if (myfd<0) return -1;
 	if (argc!=2) {
-		fprintf(env->io_fd,"wrong arg count\n");
+		dprintf(env->io_fd,"wrong arg count\n");
 		io_close(myfd);
 		return -1;
 	}
@@ -142,16 +142,16 @@ static int get_fnc(int argc, char **argv, struct Env *env) {
 		unsigned int ack_mask;
 		rc=io_control(myfd,CEC_GET_ACK_MSK,&ack_mask,sizeof(ack_mask));
 		if (!rc) {
-			fprintf(env->io_fd,"ack_mask=%x\n",ack_mask);
+			dprintf(env->io_fd,"ack_mask=%x\n",ack_mask);
 		}
 	} else if (!__builtin_strcmp(var,"promisc")) {
 		unsigned int val;
 		rc=io_control(myfd,CEC_GET_PROMISC,&val,sizeof(val));
 		if (!rc) {
-			fprintf(env->io_fd,"promisc=%x\n",val);
+			dprintf(env->io_fd,"promisc=%x\n",val);
 		}
 	} else {
-		fprintf(env->io_fd,"unknown var %s\n",var);
+		dprintf(env->io_fd,"unknown var %s\n",var);
 	}
 	io_close(myfd);
 	return rc;
@@ -162,16 +162,16 @@ static int scan_fnc(int argc, char **argv, struct Env *env) {
 	int i;
 	int myfd=io_open(CEC_DRV);
 	if (myfd<0) {
-		fprintf(env->io_fd,"could not open cec_drv\n");
+		dprintf(env->io_fd,"could not open cec_drv\n");
 		return -1;
 	}
 	for (i=0;i<0xf;i++) {
 		unsigned char addr=0xf0|i;
 		int rc=io_write(myfd,(char *)&addr,1);
 		if (rc<0) {
-			fprintf(env->io_fd,"send %x failed\n",addr);
+			dprintf(env->io_fd,"send %x failed\n",addr);
 		} else {
-			fprintf(env->io_fd,"send %x success return %d\n",addr,rc);
+			dprintf(env->io_fd,"send %x success return %d\n",addr,rc);
 		}
 	}
 	io_close(myfd);
